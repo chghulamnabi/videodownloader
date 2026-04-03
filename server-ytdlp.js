@@ -246,28 +246,28 @@ app.post('/api/video-info', async (req, res) => {
         console.log('Fetching video info for:', url);
 
         // Use yt-dlp to get video info
-        const command = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --dump-json --no-warnings ${COOKIES_FLAG} --extractor-retries 3 --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
+        const command = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --dump-json --no-warnings --no-playlist ${COOKIES_FLAG} --extractor-retries 3 --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
 
         const { stdout, stderr } = await execPromise(command, { maxBuffer: 1024 * 1024 * 10 });
 
         const videoData = JSON.parse(stdout);
 
-        // Get formats with both video and audio
+        // Get all formats and build quality options
         const formats = (videoData.formats || [])
-            .filter(f => {
-                return (f.vcodec && f.vcodec !== 'none' && f.acodec && f.acodec !== 'none');
-            })
+            .filter(f => f.vcodec && f.vcodec !== 'none' && f.height)
             .map(f => ({
                 itag: f.format_id,
-                quality: f.height || f.quality,
-                qualityLabel: f.format_note || (f.height ? `${f.height}p` : 'unknown'),
+                quality: f.height,
+                qualityLabel: f.format_note || `${f.height}p`,
                 hasVideo: true,
-                hasAudio: true,
+                hasAudio: f.acodec && f.acodec !== 'none',
                 container: f.ext || 'mp4',
                 contentLength: f.filesize || f.filesize_approx,
                 fps: f.fps,
                 format_id: f.format_id
             }))
+            // Deduplicate by height, keep best
+            .filter((f, idx, arr) => arr.findIndex(x => x.quality === f.quality) === idx)
             .sort((a, b) => (b.quality || 0) - (a.quality || 0));
 
         console.log(`Found ${formats.length} formats`);
