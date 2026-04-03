@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yoursite.com/sitemap.xml
+
+# Crawl delay (optional - be polite to servers)
+Crawl-delay: 1
+
+# Specific directives
+Allow: /blog.html
+Allow: /blog-*.html
+Allow: /index.html
+
+# Disallow private directories (if any)
+Disallow: /node_modules/
+Disallow: /downloads/

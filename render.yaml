@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: videosavez
+    env: node
+    buildCommand: "npm install && pip install yt-dlp && apt-get install -y ffmpeg || true"
+    startCommand: "node server-ytdlp.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000

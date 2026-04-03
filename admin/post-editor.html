@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Editor | VideoSavez Admin</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Quill rich text editor -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #0a0a0f; color: #fff; min-height: 100vh; }
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 40px; background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(0,212,255,0.15);
+        }
+        .topbar h1 { font-family: 'Orbitron', sans-serif; font-size: 20px; background: linear-gradient(135deg,#00d4ff,#b537f2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .topbar-actions { display: flex; gap: 12px; }
+        .btn {
+            padding: 10px 22px; border-radius: 8px; font-size: 15px; font-weight: 600;
+            font-family: 'Rajdhani', sans-serif; cursor: pointer; border: none;
+            display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s; text-decoration: none;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: linear-gradient(135deg,#00d4ff,#b537f2); color: #fff; }
+        .btn-success { background: linear-gradient(135deg,#39ff14,#00d4ff); color: #000; }
+        .btn-outline { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.2); }
+        .layout { display: grid; grid-template-columns: 1fr 300px; gap: 30px; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .main-col { display: flex; flex-direction: column; gap: 20px; }
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 24px;
+        }
+        .card-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+        input[type="text"], input[type="url"], select, textarea {
+            width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: #fff; font-size: 15px; font-family: 'Rajdhani', sans-serif;
+            outline: none; transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #00d4ff; }
+        select option { background: #1a1a2e; }
+        label { display: block; margin-bottom: 6px; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .title-input { font-size: 22px !important; font-weight: 700; padding: 16px !important; }
+        /* Quill editor dark theme */
+        .ql-toolbar { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 8px 8px 0 0 !important; }
+        .ql-toolbar .ql-stroke { stroke: rgba(255,255,255,0.6) !important; }
+        .ql-toolbar .ql-fill { fill: rgba(255,255,255,0.6) !important; }
+        .ql-toolbar button:hover .ql-stroke, .ql-toolbar button.ql-active .ql-stroke { stroke: #00d4ff !important; }
+        .ql-toolbar button:hover .ql-fill, .ql-toolbar button.ql-active .ql-fill { fill: #00d4ff !important; }
+        .ql-container { background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-top: none !important; border-radius: 0 0 8px 8px !important; min-height: 400px; }
+        .ql-editor { color: #fff !important; font-size: 16px; line-height: 1.7; font-family: 'Rajdhani', sans-serif; }
+        .ql-editor.ql-blank::before { color: rgba(255,255,255,0.3) !important; }
+        .ql-picker-label { color: rgba(255,255,255,0.6) !important; }
+        .ql-picker-options { background: #1a1a2e !important; border-color: rgba(255,255,255,0.1) !important; }
+        .ql-picker-item { color: rgba(255,255,255,0.8) !important; }
+        .toast {
+            position: fixed; bottom: 30px; right: 30px; padding: 14px 24px;
+            border-radius: 10px; font-size: 15px; font-weight: 600; z-index: 9999;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-success { background: rgba(57,255,20,0.9); color: #000; }
+        .toast-error { background: rgba(255,46,151,0.9); color: #fff; }
+        .slug-preview { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 6px; }
+        .slug-preview span { color: #00d4ff; }
+        @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1 id="pageTitle"><i class="fas fa-pen" style="margin-right:8px;font-size:16px;"></i>New Post</h1>
+        <div class="topbar-actions">
+            <a href="/admin/dashboard" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            <button class="btn btn-outline" onclick="savePost('draft')"><i class="fas fa-save"></i> Save Draft</button>
+            <button class="btn btn-success" onclick="savePost('published')"><i class="fas fa-globe"></i> Publish</button>
+        </div>
+    </div>
+
+    <div class="layout">
+        <div class="main-col">
+            <div class="card">
+                <label>Post Title</label>
+                <input type="text" id="postTitle" class="title-input" placeholder="Enter post title..." oninput="updateSlug()">
+                <div class="slug-preview">URL: /blogs/<span id="slugPreview">post-slug</span>.html</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Content</div>
+                <div id="editor"></div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card">
+                <div class="card-title">Post Settings</div>
+                <label>Category</label>
+                <select id="postCategory" style="margin-bottom:14px;">
+                    <option value="Guides">Guides</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Tips">Tips</option>
+                    <option value="Legal">Legal</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Comparison">Comparison</option>
+                    <option value="Support">Support</option>
+                    <option value="News">News</option>
+                </select>
+                <label>Read Time (e.g. "5 min read")</label>
+                <input type="text" id="readTime" placeholder="5 min read" style="margin-bottom:14px;">
+                <label>Author</label>
+                <input type="text" id="postAuthor" value="Cyber Vision Team" style="margin-bottom:14px;">
+            </div>
+
+            <div class="card">
+                <div class="card-title">Featured Image</div>
+                <label>Image URL</label>
+                <input type="url" id="featuredImage" placeholder="https://images.unsplash.com/..." style="margin-bottom:10px;" oninput="previewImage()">
+                <img id="imagePreview" src="" alt="" style="width:100%;border-radius:8px;display:none;margin-top:10px;">
+            </div>
+
+            <div class="card">
+                <div class="card-title">SEO</div>
+                <label>Meta Description</label>
+                <textarea id="metaDesc" rows="3" placeholder="Brief description for search engines..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your blog post content here...',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    [{ color: [] }, { background: [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Load existing post if editing
+        const urlParams = new URLSearchParams(window.location.search);
+        const editSlug = urlParams.get('slug');
+        if (editSlug) {
+            document.getElementById('pageTitle').innerHTML = '<i class="fas fa-edit" style="margin-right:8px;font-size:16px;"></i>Edit Post';
+            loadPost(editSlug);
+        }
+
+        async function loadPost(slug) {
+            const res = await fetch(`/admin/api/posts/${slug}`);
+            if (res.status === 401) { window.location.href = '/admin'; return; }
+            const post = await res.json();
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postCategory').value = post.category || 'Guides';
+            document.getElementById('readTime').value = post.readTime || '';
+            document.getElementById('postAuthor').value = post.author || 'Cyber Vision Team';
+            document.getElementById('featuredImage').value = post.featuredImage || '';
+            document.getElementById('metaDesc').value = post.metaDesc || '';
+            document.getElementById('slugPreview').textContent = slug;
+            if (post.featuredImage) previewImage();
+            quill.root.innerHTML = post.content || '';
+        }
+
+        function updateSlug() {
+            const title = document.getElementById('postTitle').value;
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            document.getElementById('slugPreview').textContent = slug || 'post-slug';
+        }
+
+        function previewImage() {
+            const url = document.getElementById('featuredImage').value;
+            const img = document.getElementById('imagePreview');
+            if (url) { img.src = url; img.style.display = 'block'; }
+            else { img.style.display = 'none'; }
+        }
+
+        async function savePost(status) {
+            const title = document.getElementById('postTitle').value.trim();
+            if (!title) { showToast('Please enter a post title', 'error'); return; }
+
+            const content = quill.root.innerHTML;
+            const slug = editSlug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+            const payload = {
+                slug,
+                title,
+                content,
+                status,
+                category: document.getElementById('postCategory').value,
+                readTime: document.getElementById('readTime').value,
+                author: document.getElementById('postAuthor').value,
+                featuredImage: document.getElementById('featuredImage').value,
+                metaDesc: document.getElementById('metaDesc').value,
+            };
+
+            const res = await fetch('/admin/api/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.status === 401) { window.location.href = '/admin'; return; }
+            const data = await res.json();
+
+            if (data.success) {
+                showToast(status === 'published' ? 'Post published!' : 'Draft saved!', 'success');
+                setTimeout(() => window.location.href = '/admin/dashboard', 1500);
+            } else {
+                showToast(data.error || 'Failed to save post', 'error');
+            }
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast toast-${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

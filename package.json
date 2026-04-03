@@ -1,0 +1,21 @@
+{
+  "name": "videosavez",
+  "version": "2.0.0",
+  "description": "VideoSavez - Free Video Downloader",
+  "main": "server-ytdlp.js",
+  "scripts": {
+    "start": "node server-ytdlp.js",
+    "build": "pip install yt-dlp",
+    "dev": "node server-ytdlp.js"
+  },
+  "keywords": ["youtube", "downloader", "video", "yt-dlp"],
+  "author": "VideoSavez",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

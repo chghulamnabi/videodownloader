@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete API documentation for YTD Video Download API. Examples, endpoints, and integration guide.">
+    <title>API Documentation | VideoSavez</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-advanced.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .docs-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px 20px;
+        }
+        .sidebar h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-blue);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            color: var(--cyber-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .docs-content {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+        }
+        .endpoint {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--cyber-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .method.post {
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+        }
+        .method.get {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+        }
+        code {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: var(--cyber-green);
+            font-size: 14px;
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--cyber-green);
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .param-table th,
+        .param-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .param-table th {
+            background: rgba(0, 212, 255, 0.1);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-blue);
+        }
+        .required {
+            color: var(--cyber-pink);
+            font-weight: 700;
+        }
+        @media (max-width: 968px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+    <!-- Google AdSense / Ad Network Script -->
+    <!-- Replace with your actual ad network script when approved -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <span>VideoSavez API</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="api-service.html">API</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="api-docs.html" class="active">Docs</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+
+        <div style="text-align: center; margin: 60px 0 40px;">
+            <h1 class="title" style="font-size: 56px;">
+                API <span class="gradient-text">Documentation</span>
+            </h1>
+            <p class="subtitle" style="font-size: 20px;">
+                Everything you need to integrate video downloads into your application
+            </p>
+        </div>
+
+        <div class="docs-container">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <h3>Documentation</h3>
+                <ul>
+                    <li><a href="#getting-started" class="active">Getting Started</a></li>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#endpoints">Endpoints</a></li>
+                    <li><a href="#video-info">Get Video Info</a></li>
+                    <li><a href="#download">Download Video</a></li>
+                    <li><a href="#platforms">Platforms</a></li>
+                    <li><a href="#rate-limits">Rate Limits</a></li>
+                    <li><a href="#errors">Error Handling</a></li>
+                    <li><a href="#examples">Code Examples</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Documentation Content -->
+            <main class="docs-content">
+                <section id="getting-started">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Getting Started
+                    </h2>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+                        Welcome to the YTD Video Download API. This API allows you to download videos from YouTube, TikTok, and Vimeo programmatically. All platforms have been tested and verified working.
+                    </p>
+                    <div style="background: rgba(57, 255, 20, 0.1); border-left: 4px solid var(--cyber-green); padding: 20px; margin: 20px 0; border-radius: 10px;">
+                        <strong><i class="fas fa-check-circle"></i> Verified Platforms:</strong> YouTube (videos & shorts), TikTok, Vimeo
+                        <br><strong style="color: var(--cyber-pink);"><i class="fas fa-times-circle"></i> Not Supported:</strong> Instagram, Facebook, Twitter/X, Dailymotion (require authentication)
+                    </div>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+                        <strong>Base URL:</strong> <code>https://api.ytd.com</code> (Change to your domain)
+                    </p>
+                    <p style="font-size: 18px; line-height: 1.8;">
+                        All API requests must be made over HTTPS. Calls made over HTTP will fail.
+                    </p>
+                </section>
+
+                <section id="authentication" style="margin-top: 60px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Authentication
+                    </h2>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+                        Authenticate your API requests by including your API key in the request headers or as a query parameter.
+                    </p>
+
+                    <h3 style="font-size: 24px; margin: 30px 0 15px;">Header Authentication (Recommended)</h3>
+                    <pre><code>X-API-Key: your_api_key_here</code></pre>
+
+                    <h3 style="font-size: 24px; margin: 30px 0 15px;">Query Parameter Authentication</h3>
+                    <pre><code>?api_key=your_api_key_here</code></pre>
+
+                    <div style="background: rgba(57, 255, 20, 0.1); border-left: 4px solid var(--cyber-green); padding: 20px; margin: 30px 0; border-radius: 10px;">
+                        <strong><i class="fas fa-info-circle"></i> Demo API Key:</strong> <code>demo_key_123</code>
+                        <br>(50 requests per day, for testing only)
+                    </div>
+                </section>
+
+                <section id="endpoints" style="margin-top: 60px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Available Endpoints
+                    </h2>
+
+                    <div class="endpoint" id="video-info">
+                        <h3 style="font-size: 24px; margin-bottom: 15px;">
+                            <span class="method post">POST</span>
+                            <code>/api/video/info</code>
+                        </h3>
+                        <p style="margin-bottom: 20px;">Get comprehensive information about a video including title, author, duration, and available quality formats.</p>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Request Body</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>url</code></td>
+                                    <td>string</td>
+                                    <td><span class="required">Yes</span></td>
+                                    <td>Video URL from supported platform</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Example Request</h4>
+                        <pre><code>curl -X POST https://api.ytd.com/api/video/info \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key_here" \
+  -d '{
+    "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+  }'</code></pre>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Example Response</h4>
+                        <pre><code>{
+  "success": true,
+  "data": {
+    "title": "Video Title",
+    "author": "Channel Name",
+    "duration": 240,
+    "views": 1000000,
+    "uploadDate": "20240315",
+    "thumbnail": "https://...",
+    "platform": "youtube",
+    "formats": [
+      {
+        "format_id": "137",
+        "quality": 1080,
+        "qualityLabel": "1080p",
+        "hasVideo": true,
+        "hasAudio": false,
+        "container": "mp4",
+        "filesize": 50000000
+      }
+    ]
+  },
+  "remaining_requests": 49
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint" id="download">
+                        <h3 style="font-size: 24px; margin-bottom: 15px;">
+                            <span class="method post">POST</span>
+                            <code>/api/video/download</code>
+                        </h3>
+                        <p style="margin-bottom: 20px;">Download a video in specified quality. Returns the video file as a stream.</p>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Request Body</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>url</code></td>
+                                    <td>string</td>
+                                    <td><span class="required">Yes</span></td>
+                                    <td>Video URL from supported platform</td>
+                                </tr>
+                                <tr>
+                                    <td><code>quality</code></td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Desired quality (360p, 720p, 1080p). Default: 720p</td>
+                                </tr>
+                                <tr>
+                                    <td><code>format</code></td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Output format (mp4, webm). Default: mp4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Example Request</h4>
+                        <pre><code>curl -X POST https://api.ytd.com/api/video/download \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key_here" \
+  -d '{
+    "url": "https://youtube.com/watch?v=dQw4w9WgXcQ",
+    "quality": "1080p",
+    "format": "mp4"
+  }' \
+  --output video.mp4</code></pre>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Response Headers</h4>
+                        <pre><code>Content-Type: video/mp4
+Content-Disposition: attachment; filename="video_title.mp4"
+X-Remaining-Requests: 49</code></pre>
+                    </div>
+
+                    <div class="endpoint" id="platforms">
+                        <h3 style="font-size: 24px; margin-bottom: 15px;">
+                            <span class="method get">GET</span>
+                            <code>/api/platforms</code>
+                        </h3>
+                        <p style="margin-bottom: 20px;">Get list of all supported platforms and their capabilities.</p>
+
+                        <h4 style="font-size: 18px; margin: 20px 0 10px;">Example Request</h4>
+                        <pre><code>curl -X GET https://api.ytd.com/api/platforms \
+  -H "X-API-Key: your_api_key_here"</code></pre>
+                    </div>
+                </section>
+
+                <section id="rate-limits" style="margin-top: 60px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Rate Limits
+                    </h2>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+                        Rate limits vary by plan. The remaining request count is included in every API response.
+                    </p>
+
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Plan</th>
+                                <th>Requests/Day</th>
+                                <th>Reset Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Free</td>
+                                <td>50</td>
+                                <td>00:00 UTC</td>
+                            </tr>
+                            <tr>
+                                <td>Basic</td>
+                                <td>500</td>
+                                <td>00:00 UTC</td>
+                            </tr>
+                            <tr>
+                                <td>Premium</td>
+                                <td>1,000</td>
+                                <td>00:00 UTC</td>
+                            </tr>
+                            <tr>
+                                <td>Enterprise</td>
+                                <td>Unlimited</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="errors" style="margin-top: 60px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Error Handling
+                    </h2>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
+                        The API uses standard HTTP status codes to indicate success or failure.
+                    </p>
+
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Status Code</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>200</td>
+                                <td>Success</td>
+                            </tr>
+                            <tr>
+                                <td>400</td>
+                                <td>Bad Request - Invalid parameters</td>
+                            </tr>
+                            <tr>
+                                <td>401</td>
+                                <td>Unauthorized - Invalid API key</td>
+                            </tr>
+                            <tr>
+                                <td>429</td>
+                                <td>Too Many Requests - Rate limit exceeded</td>
+                            </tr>
+                            <tr>
+                                <td>500</td>
+                                <td>Internal Server Error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="font-size: 18px; margin: 30px 0 10px;">Error Response Example</h4>
+                    <pre><code>{
+  "success": false,
+  "error": "Rate limit exceeded",
+  "message": "You have exceeded your daily request limit. Upgrade your plan."
+}</code></pre>
+                </section>
+
+                <section id="examples" style="margin-top: 60px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px; color: var(--cyber-blue);">
+                        Code Examples
+                    </h2>
+
+                    <h3 style="font-size: 24px; margin: 30px 0 15px;">JavaScript</h3>
+                    <pre><code>const response = await fetch('https://api.ytd.com/api/video/info', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'your_api_key_here'
+  },
+  body: JSON.stringify({
+    url: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
+  })
+});
+
+const data = await response.json();
+console.log(data.data.title);</code></pre>
+
+                    <h3 style="font-size: 24px; margin: 30px 0 15px;">Python</h3>
+                    <pre><code>import requests
+
+response = requests.post(
+    'https://api.ytd.com/api/video/info',
+    headers={'X-API-Key': 'your_api_key_here'},
+    json={'url': 'https://youtube.com/watch?v=dQw4w9WgXcQ'}
+)
+
+data = response.json()
+print(data['data']['title'])</code></pre>
+
+                    <h3 style="font-size: 24px; margin: 30px 0 15px;">PHP</h3>
+                    <pre><code>$ch = curl_init('https://api.ytd.com/api/video/info');
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    'url' => 'https://youtube.com/watch?v=dQw4w9WgXcQ'
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'X-API-Key: your_api_key_here'
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+echo $data['data']['title'];</code></pre>
+                </section>
+
+                <div style="text-align: center; margin: 80px 0 40px;">
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 20px;">
+                        Need Help?
+                    </h2>
+                    <p style="font-size: 18px; margin-bottom: 30px; color: rgba(255,255,255,0.8);">
+                        Can't find what you're looking for? Contact our support team.
+                    </p>
+                    <a href="contact.html" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple)); border-radius: 50px; color: white; text-decoration: none; font-weight: 700; font-size: 18px;">
+                        Contact Support <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2026 VideoSavez. Made with <i class="fas fa-heart"></i> for developers</p>
+            <p class="disclaimer">API Documentation v2.0</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Update active state
+                    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

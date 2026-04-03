@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download YouTube videos in HD, Full HD, and 4K quality. Fast, free, and easy-to-use YouTube downloader. Support for all video formats and resolutions.">
+    <meta name="keywords" content="youtube downloader, download youtube videos, youtube to mp4, youtube video download, hd youtube download, 4k youtube download, free youtube downloader">
+    <meta name="author" content="VideoSavez">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://videosavez.com/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://videosavez.com/">
+    <meta property="og:title" content="VideoSavez - Free Video Downloader">
+    <meta property="og:description" content="Download YouTube videos in HD, Full HD, and 4K quality. Fast, free, and secure downloads.">
+    <meta property="og:image" content="https://videosavez.com/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://videosavez.com/">
+    <meta property="twitter:title" content="VideoSavez - Free Video Downloader">
+    <meta property="twitter:description" content="Download YouTube videos in HD, Full HD, and 4K quality. Fast, free, and secure downloads.">
+    <meta property="twitter:image" content="https://videosavez.com/og-image.jpg">
+
+    <title>VideoSavez - Download Videos in HD | Free Video Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-advanced.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google AdSense / Ad Network Script -->
+    <!-- Replace with your actual ad network script when approved -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Animated Cyber Background -->
+    <div class="grid-bg"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <span>VideoSavez</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="blog.html">Blog</a>
+                <a href="api-service.html">API</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1 class="title">
+                    Download YouTube Videos
+                    <span class="gradient-text">Instantly</span>
+                </h1>
+                <p class="subtitle">High quality video & audio downloads. Fast, free, and easy to use.</p>
+            </section>
+
+            <!-- Search Section -->
+            <section class="search-section">
+                <div class="search-container glass-card">
+                    <div class="input-wrapper">
+                        <i class="fas fa-link"></i>
+                        <input
+                            type="text"
+                            id="videoUrl"
+                            placeholder="Paste YouTube URL here..."
+                            autocomplete="off"
+                        >
+                        <button class="clear-btn" id="clearBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button class="download-btn" id="fetchBtn">
+                        <span class="btn-text">Get Video</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Fetching video information...</p>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText"></span>
+                </div>
+            </section>
+
+            <!-- Video Info Section -->
+            <section class="video-info-section" id="videoInfoSection">
+                <div class="video-preview glass-card">
+                    <div class="thumbnail-container">
+                        <img id="videoThumbnail" src="" alt="Video Thumbnail">
+                        <div class="duration-badge" id="videoDuration"></div>
+                    </div>
+                    <div class="video-details">
+                        <h2 id="videoTitle"></h2>
+                        <div class="video-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-user"></i>
+                                <span id="videoAuthor"></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-eye"></i>
+                                <span id="videoViews"></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="videoDate"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Options -->
+                <div class="download-options glass-card">
+                    <h3>Select Quality & Format</h3>
+
+                    <!-- Format Tabs -->
+                    <div class="format-tabs">
+                        <button class="tab-btn active" data-format="video">
+                            <i class="fas fa-video"></i>
+                            Video
+                        </button>
+                        <button class="tab-btn" data-format="audio">
+                            <i class="fas fa-music"></i>
+                            Audio Only
+                        </button>
+                    </div>
+
+                    <!-- Quality Options -->
+                    <div class="quality-grid" id="qualityGrid">
+                        <!-- Quality cards will be inserted here -->
+                    </div>
+
+                    <!-- Download Progress -->
+                    <div class="download-progress" id="downloadProgress">
+                        <div class="progress-info">
+                            <span id="progressText">Preparing download...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Blog Posts -->
+            <section class="featured-blogs" style="margin: 80px 0;">
+
+            <!-- AD SLOT: Leaderboard (728x90) - Below downloader tool -->
+            <div class="ad-slot ad-leaderboard">
+                <span class="ad-label">Advertisement</span>
+                <!-- Replace data-ad-slot with your network's ad code -->
+                <ins class="adsbygoogle ad-unit"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+                <h2 style="font-family: 'Orbitron', sans-serif; font-size: 42px; text-align: center; margin-bottom: 50px; background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Latest Guides & Tips
+                </h2>
+                <div class="blog-grid">
+                    <article class="blog-card glass-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800" alt="HD Video Quality">
+                            <div class="blog-category">Guides</div>
+                        </div>
+                        <div class="blog-content">
+                            <h2>How to Download YouTube Videos in HD Quality</h2>
+                            <p>Learn the best methods to download YouTube videos in crystal-clear HD, Full HD, and 4K quality.</p>
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 20, 2026</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                            </div>
+                            <a href="blogs/blog-hd-quality.html" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card glass-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?w=800" alt="Video Codecs">
+                            <div class="blog-category">Technical</div>
+                        </div>
+                        <div class="blog-content">
+                            <h2>Understanding YouTube Video Codecs</h2>
+                            <p>Deep dive into H.264, H.265, VP9, and AV1 codecs for optimal video downloads.</p>
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 15, 2026</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                            </div>
+                            <a href="blogs/blog-video-codecs.html" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card glass-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800" alt="Quality Guide">
+                            <div class="blog-category">Guides</div>
+                        </div>
+                        <div class="blog-content">
+                            <h2>YouTube Video Quality Guide: 360p to 4K</h2>
+                            <p>Comprehensive comparison of all YouTube quality levels and which is right for you.</p>
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 3, 2026</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                            </div>
+                            <a href="blogs/blog-quality-guide.html" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="blog.html" style="display: inline-block; padding: 18px 40px; background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple)); border-radius: 50px; color: white; text-decoration: none; font-weight: 700; font-size: 18px; transition: all 0.3s; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);">
+                        View All Articles <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- AD SLOT: Rectangle (336x280) - Between blogs and features -->
+            <div class="ad-slot ad-rectangle">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle ad-unit"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="0987654321"
+                     data-ad-format="rectangle"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Features Section -->
+            <section class="features">
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Download videos in seconds with our optimized servers</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Safe</h3>
+                    <p>No malware, no ads, completely secure downloads</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hd-video"></i>
+                    </div>
+                    <h3>High Quality</h3>
+                    <p>Download in HD, Full HD, or 4K resolution</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>All Devices</h3>
+                    <p>Works perfectly on desktop, tablet, and mobile</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- AD SLOT: Footer Banner (728x90) - Above footer -->
+        <div class="ad-slot ad-leaderboard">
+            <span class="ad-label">Advertisement</span>
+            <ins class="adsbygoogle ad-unit"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="1122334455"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 VideoSavez. Made with <i class="fas fa-heart"></i> for video lovers</p>
+            <p class="disclaimer">Disclaimer: Please respect copyright laws and use this tool responsibly.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

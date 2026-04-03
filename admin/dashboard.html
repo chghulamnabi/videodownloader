@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | VideoSavez</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #0a0a0f; color: #fff; min-height: 100vh; }
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(0,212,255,0.15);
+        }
+        .topbar h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; background: linear-gradient(135deg,#00d4ff,#b537f2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .topbar-actions { display: flex; gap: 15px; align-items: center; }
+        .btn {
+            padding: 10px 22px; border-radius: 8px; font-size: 15px; font-weight: 600;
+            font-family: 'Rajdhani', sans-serif; cursor: pointer; border: none; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: linear-gradient(135deg,#00d4ff,#b537f2); color: #fff; }
+        .btn-danger { background: rgba(255,46,151,0.15); color: #ff2e97; border: 1px solid #ff2e97; }
+        .btn-sm { padding: 7px 14px; font-size: 13px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 14px; padding: 25px; text-align: center;
+        }
+        .stat-card .num { font-family: 'Orbitron', sans-serif; font-size: 36px; color: #00d4ff; }
+        .stat-card .label { color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 5px; }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 18px; margin-bottom: 20px; color: rgba(255,255,255,0.8); }
+        .posts-table { width: 100%; border-collapse: collapse; }
+        .posts-table th {
+            text-align: left; padding: 12px 16px; font-size: 13px; text-transform: uppercase;
+            letter-spacing: 1px; color: rgba(255,255,255,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .posts-table td {
+            padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 15px; vertical-align: middle;
+        }
+        .posts-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .badge-published { background: rgba(57,255,20,0.15); color: #39ff14; }
+        .badge-draft { background: rgba(255,235,59,0.15); color: #ffeb3b; }
+        .empty { text-align: center; padding: 60px; color: rgba(255,255,255,0.3); }
+        .empty i { font-size: 48px; margin-bottom: 15px; display: block; }
+        .actions { display: flex; gap: 8px; }
+        a.view-link { color: #00d4ff; text-decoration: none; font-size: 13px; }
+        a.view-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1><i class="fas fa-newspaper" style="margin-right:10px;font-size:18px;"></i>Blog Dashboard</h1>
+        <div class="topbar-actions">
+            <a href="/admin/new-post" class="btn btn-primary"><i class="fas fa-plus"></i> New Post</a>
+            <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="num" id="totalPosts">0</div>
+                <div class="label">Total Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="publishedPosts">0</div>
+                <div class="label">Published</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="draftPosts">0</div>
+                <div class="label">Drafts</div>
+            </div>
+        </div>
+
+        <div class="section-title">All Blog Posts</div>
+        <div id="postsContainer">
+            <div class="empty"><i class="fas fa-spinner fa-spin"></i>Loading posts...</div>
+        </div>
+    </div>
+
+    <script>
+        async function loadPosts() {
+            const res = await fetch('/admin/api/posts');
+            if (res.status === 401) { window.location.href = '/admin'; return; }
+            const posts = await res.json();
+
+            document.getElementById('totalPosts').textContent = posts.length;
+            document.getElementById('publishedPosts').textContent = posts.filter(p => p.status === 'published').length;
+            document.getElementById('draftPosts').textContent = posts.filter(p => p.status === 'draft').length;
+
+            const container = document.getElementById('postsContainer');
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="empty"><i class="fas fa-file-alt"></i>No posts yet. Create your first post!</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="posts-table">
+                    <thead><tr>
+                        <th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${posts.map(p => `
+                        <tr>
+                            <td><strong>${p.title}</strong></td>
+                            <td>${p.category || '-'}</td>
+                            <td>${p.date}</td>
+                            <td><span class="badge badge-${p.status}">${p.status}</span></td>
+                            <td>
+                                <div class="actions">
+                                    <a href="/admin/edit-post?slug=${p.slug}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                                    ${p.status === 'published' ? `<a href="/blogs/${p.slug}.html" target="_blank" class="btn btn-sm" style="background:rgba(0,212,255,0.1);color:#00d4ff;border:1px solid #00d4ff;"><i class="fas fa-eye"></i> View</a>` : ''}
+                                    <button onclick="deletePost('${p.slug}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+        }
+
+        async function deletePost(slug) {
+            if (!confirm('Delete this post permanently?')) return;
+            const res = await fetch(`/admin/api/posts/${slug}`, { method: 'DELETE' });
+            if (res.ok) loadPosts();
+        }
+
+        async function logout() {
+            await fetch('/admin/logout', { method: 'POST' });
+            window.location.href = '/admin';
+        }
+
+        loadPosts();
+    </script>
+</body>
+</html>

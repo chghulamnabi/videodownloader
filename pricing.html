@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Video Download API Pricing - Flexible plans for every need. From free tier to enterprise solutions.">
+    <title>API Pricing Plans | VideoSavez</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-advanced.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5);
+        }
+        .pricing-card.featured {
+            border-color: var(--cyber-green);
+            background: rgba(57, 255, 20, 0.05);
+        }
+        .pricing-card.featured::before {
+            content: '⭐ MOST POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+            color: white;
+            padding: 5px 40px;
+            font-size: 12px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.5);
+        }
+        .plan-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .plan-price {
+            font-size: 56px;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            margin: 20px 0;
+        }
+        .plan-price span {
+            font-size: 24px;
+            color: rgba(255,255,255,0.6);
+        }
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+        }
+        .plan-features li i {
+            color: var(--cyber-green);
+            margin-right: 10px;
+            width: 20px;
+        }
+        .plan-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+        .plan-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6);
+        }
+        .featured .plan-btn {
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+            box-shadow: 0 10px 30px rgba(57, 255, 20, 0.4);
+        }
+    </style>
+    <!-- Google AdSense / Ad Network Script -->
+    <!-- Replace with your actual ad network script when approved -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <span>VideoSavez API</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="api-service.html">API</a>
+                <a href="pricing.html" class="active">Pricing</a>
+                <a href="api-docs.html">Docs</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+
+        <section class="hero" style="text-align: center; margin: 80px 0 40px;">
+            <h1 class="title" style="font-size: 64px;">
+                Simple, <span class="gradient-text">Transparent</span> Pricing
+            </h1>
+            <p class="subtitle" style="font-size: 24px;">
+                Choose the plan that fits your needs. Upgrade or downgrade anytime.
+            </p>
+        </section>
+
+        <div class="pricing-grid">
+            <!-- Free Tier -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Free</h3>
+                <div class="plan-price">$0<span>/month</span></div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">Perfect for testing and small projects</p>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 50 requests/day</li>
+                    <li><i class="fas fa-check"></i> All platforms supported</li>
+                    <li><i class="fas fa-check"></i> Up to 1080p quality</li>
+                    <li><i class="fas fa-check"></i> API documentation</li>
+                    <li><i class="fas fa-check"></i> Community support</li>
+                    <li><i class="fas fa-times" style="color: rgba(255,255,255,0.3);"></i> Priority support</li>
+                    <li><i class="fas fa-times" style="color: rgba(255,255,255,0.3);"></i> Custom domains</li>
+                </ul>
+                <a href="contact.html?plan=free" class="plan-btn">Get Free API Key</a>
+            </div>
+
+            <!-- Basic Tier -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Basic</h3>
+                <div class="plan-price">$29<span>/month</span></div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">Great for growing applications</p>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 500 requests/day</li>
+                    <li><i class="fas fa-check"></i> All platforms supported</li>
+                    <li><i class="fas fa-check"></i> Up to 4K quality</li>
+                    <li><i class="fas fa-check"></i> API documentation</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                    <li><i class="fas fa-check"></i> 99.9% uptime SLA</li>
+                    <li><i class="fas fa-times" style="color: rgba(255,255,255,0.3);"></i> Custom domains</li>
+                </ul>
+                <a href="contact.html?plan=basic" class="plan-btn">Subscribe Now</a>
+            </div>
+
+            <!-- Premium Tier (Featured) -->
+            <div class="pricing-card featured">
+                <h3 class="plan-name">Premium</h3>
+                <div class="plan-price">$99<span>/month</span></div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">For serious applications and businesses</p>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 1,000 requests/day</li>
+                    <li><i class="fas fa-check"></i> All platforms + Beta features</li>
+                    <li><i class="fas fa-check"></i> Up to 8K quality</li>
+                    <li><i class="fas fa-check"></i> Priority processing</li>
+                    <li><i class="fas fa-check"></i> Priority email support</li>
+                    <li><i class="fas fa-check"></i> 99.95% uptime SLA</li>
+                    <li><i class="fas fa-check"></i> Custom domain support</li>
+                </ul>
+                <a href="contact.html?plan=premium" class="plan-btn">Start Premium</a>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Enterprise</h3>
+                <div class="plan-price">Custom</div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">For large-scale applications</p>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Unlimited requests</li>
+                    <li><i class="fas fa-check"></i> All platforms + Custom integrations</li>
+                    <li><i class="fas fa-check"></i> Maximum quality available</li>
+                    <li><i class="fas fa-check"></i> Dedicated infrastructure</li>
+                    <li><i class="fas fa-check"></i> 24/7 phone support</li>
+                    <li><i class="fas fa-check"></i> 99.99% uptime SLA</li>
+                    <li><i class="fas fa-check"></i> Custom features</li>
+                </ul>
+                <a href="contact.html?plan=enterprise" class="plan-btn">Contact Sales</a>
+            </div>
+        </div>
+
+        <section class="glass-card" style="padding: 60px; margin: 60px 0; text-align: center;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; margin-bottom: 30px;">
+                All Plans Include
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div>
+                    <i class="fas fa-shield-alt" style="font-size: 48px; color: var(--cyber-blue); margin-bottom: 15px;"></i>
+                    <h4 style="font-size: 20px; margin-bottom: 10px;">Secure API</h4>
+                    <p style="color: rgba(255,255,255,0.7);">HTTPS encryption & API key auth</p>
+                </div>
+                <div>
+                    <i class="fas fa-sync" style="font-size: 48px; color: var(--cyber-green); margin-bottom: 15px;"></i>
+                    <h4 style="font-size: 20px; margin-bottom: 10px;">Auto Updates</h4>
+                    <p style="color: rgba(255,255,255,0.7);">Regular platform support updates</p>
+                </div>
+                <div>
+                    <i class="fas fa-book" style="font-size: 48px; color: var(--cyber-purple); margin-bottom: 15px;"></i>
+                    <h4 style="font-size: 20px; margin-bottom: 10px;">Documentation</h4>
+                    <p style="color: rgba(255,255,255,0.7);">Comprehensive API docs</p>
+                </div>
+                <div>
+                    <i class="fas fa-chart-bar" style="font-size: 48px; color: var(--cyber-pink); margin-bottom: 15px;"></i>
+                    <h4 style="font-size: 20px; margin-bottom: 10px;">Analytics</h4>
+                    <p style="color: rgba(255,255,255,0.7);">Usage tracking & insights</p>
+                </div>
+            </div>
+        </section>
+
+        <section style="text-align: center; margin: 80px 0;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 48px; margin-bottom: 20px;">
+                Have Questions?
+            </h2>
+            <p style="font-size: 20px; margin-bottom: 40px; color: rgba(255,255,255,0.8);">
+                Our team is here to help you choose the right plan
+            </p>
+            <a href="contact.html" style="display: inline-block; padding: 20px 50px; background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple)); border-radius: 50px; color: white; text-decoration: none; font-weight: 700; font-size: 20px; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);">
+                Contact Us <i class="fas fa-envelope"></i>
+            </a>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 VideoSavez. Made with <i class="fas fa-heart"></i> for developers</p>
+            <p class="disclaimer">Flexible plans • No hidden fees • Cancel anytime</p>
+        </footer>
+    </div>
+</body>
+</html>

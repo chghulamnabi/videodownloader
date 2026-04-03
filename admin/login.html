@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | VideoSavez</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 0 40px rgba(0,212,255,0.1);
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #00d4ff, #b537f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p.sub { text-align: center; color: rgba(255,255,255,0.4); margin-bottom: 35px; font-size: 15px; }
+        label { display: block; margin-bottom: 6px; color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus { border-color: #00d4ff; }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00d4ff, #b537f2);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        button:hover { opacity: 0.85; }
+        .error {
+            background: rgba(255,46,151,0.1);
+            border: 1px solid #ff2e97;
+            border-radius: 8px;
+            padding: 12px;
+            color: #ff2e97;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        .error.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>Admin Panel</h1>
+        <p class="sub">VideoSavez Blog Management</p>
+        <div class="error" id="errorMsg">Invalid password. Try again.</div>
+        <form id="loginForm">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter admin password" autofocus>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const res = await fetch('/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = '/admin/dashboard';
+            } else {
+                document.getElementById('errorMsg').classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
