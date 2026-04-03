@@ -245,14 +245,33 @@ app.post('/api/video-info', async (req, res) => {
 
         console.log('Fetching video info for:', url);
 
-        // Use yt-dlp to get video info
-        const command = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --dump-json --no-warnings --no-playlist ${COOKIES_FLAG} --extractor-retries 3 --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
+        // Use spawn to avoid shell escaping issues with cookies path
+        const args = [
+            '--dump-json',
+            '--no-warnings',
+            '--no-playlist',
+            '--extractor-retries', '3',
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        ];
+        if (fs.existsSync(COOKIES_PATH)) {
+            args.push('--cookies', COOKIES_PATH);
+        }
+        args.push(url);
 
-        const { stdout, stderr } = await execPromise(command, { maxBuffer: 1024 * 1024 * 10 });
-
-        if (stderr) console.error('yt-dlp stderr:', stderr);
-
-        const videoData = JSON.parse(stdout);
+        const videoData = await new Promise((resolve, reject) => {
+            const proc = spawn(YTDLP_PATH, args);
+            let stdout = '';
+            let stderr = '';
+            proc.stdout.on('data', d => stdout += d.toString());
+            proc.stderr.on('data', d => stderr += d.toString());
+            proc.on('close', code => {
+                if (stderr) console.error('yt-dlp stderr:', stderr);
+                if (code !== 0) return reject(new Error(stderr || 'yt-dlp failed'));
+                try { resolve(JSON.parse(stdout)); }
+                catch (e) { reject(new Error('Failed to parse yt-dlp output')); }
+            });
+            proc.on('error', reject);
+        });
 
         // Get all formats and build quality options
         const formats = (videoData.formats || [])
