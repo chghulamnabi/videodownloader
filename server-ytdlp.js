@@ -252,7 +252,10 @@ app.post('/api/video-info', async (req, res) => {
             '--no-warnings',
             '--no-playlist',
             '--extractor-retries', '3',
+            '--socket-timeout', '30',
             '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--add-header', 'Accept-Language:en-US,en;q=0.9',
+            '--extractor-args', 'youtube:player_client=web,default',
         ];
         if (fs.existsSync(COOKIES_PATH)) {
             args.push('--cookies', COOKIES_PATH);
@@ -343,6 +346,8 @@ app.post('/api/download', async (req, res) => {
             ...(FFMPEG_PATH ? ['--ffmpeg-location', FFMPEG_PATH] : []),
             ...(fs.existsSync(COOKIES_PATH) ? ['--cookies', COOKIES_PATH] : []),
             '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--add-header', 'Accept-Language:en-US,en;q=0.9',
+            '--extractor-args', 'youtube:player_client=web,default',
             '-f', `bestvideo[height<=${maxHeight}][vcodec^=avc]+bestaudio[acodec^=mp4a]/bestvideo[height<=${maxHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${maxHeight}]+bestaudio/best[height<=${maxHeight}]/best`,
             '--merge-output-format', 'mp4',
             '--remux-video', 'mp4',
