@@ -22,6 +22,9 @@ RUN npm install --production
 # Copy all project files
 COPY . .
 
+# Verify cookies.txt exists
+RUN ls -la /app/cookies.txt && echo "cookies.txt found" || echo "WARNING: cookies.txt missing"
+
 # Expose port
 EXPOSE 3000
 

@@ -244,6 +244,7 @@ app.post('/api/video-info', async (req, res) => {
         }
 
         console.log('Fetching video info for:', url);
+        console.log('Cookies path:', COOKIES_PATH, '| exists:', fs.existsSync(COOKIES_PATH));
 
         // Use spawn to avoid shell escaping issues with cookies path
         const args = [
