@@ -253,17 +253,19 @@ app.post('/api/video-info', async (req, res) => {
             '--no-playlist',
             '--extractor-retries', '3',
             '--socket-timeout', '30',
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            '--add-header', 'Accept-Language:en-US,en;q=0.9',
-            '--extractor-args', 'youtube:player_client=web,default',
+            '--extractor-args', 'youtube:player_client=android',
         ];
-        if (fs.existsSync(COOKIES_PATH)) {
-            args.push('--cookies', COOKIES_PATH);
-        }
+
         args.push(url);
 
+        // Add Node.js to PATH for signature solving
+        const env = { ...process.env };
+        if (IS_WINDOWS && !env.PATH.includes('nodejs')) {
+            env.PATH = `C:\\Program Files\\nodejs;${env.PATH}`;
+        }
+
         const videoData = await new Promise((resolve, reject) => {
-            const proc = spawn(YTDLP_PATH, args);
+            const proc = spawn(YTDLP_PATH, args, { env });
             let stdout = '';
             let stderr = '';
             proc.stdout.on('data', d => stdout += d.toString());
@@ -330,8 +332,10 @@ app.post('/api/download', async (req, res) => {
         console.log('Download request:', { url, quality });
 
         // Get video info first to get the title
-        const infoCommand = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --get-title --no-warnings ${COOKIES_FLAG} --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
-        const { stdout: titleOutput } = await execPromise(infoCommand);
+        const infoCommand = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --get-title --no-warnings --extractor-args "youtube:player_client=android" "${url}"`;
+        const { stdout: titleOutput } = await execPromise(infoCommand, {
+            env: { ...process.env, PATH: IS_WINDOWS && !process.env.PATH.includes('nodejs') ? `C:\\Program Files\\nodejs;${process.env.PATH}` : process.env.PATH }
+        });
         const title = titleOutput.trim().replace(/[^\w\s.-]/gi, '_');
 
         console.log('Video title:', title);
@@ -344,10 +348,7 @@ app.post('/api/download', async (req, res) => {
         const maxHeight = quality ? quality.replace('p', '') : '720';
         const args = [
             ...(FFMPEG_PATH ? ['--ffmpeg-location', FFMPEG_PATH] : []),
-            ...(fs.existsSync(COOKIES_PATH) ? ['--cookies', COOKIES_PATH] : []),
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            '--add-header', 'Accept-Language:en-US,en;q=0.9',
-            '--extractor-args', 'youtube:player_client=web,default',
+            '--extractor-args', 'youtube:player_client=android',
             '-f', `bestvideo[height<=${maxHeight}][vcodec^=avc]+bestaudio[acodec^=mp4a]/bestvideo[height<=${maxHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${maxHeight}]+bestaudio/best[height<=${maxHeight}]/best`,
             '--merge-output-format', 'mp4',
             '--remux-video', 'mp4',
@@ -358,7 +359,13 @@ app.post('/api/download', async (req, res) => {
 
         console.log('Spawning yt-dlp with args:', args);
 
-        const ytdlp = spawn(YTDLP_PATH, args);
+        // Add Node.js to PATH for signature solving
+        const env = { ...process.env };
+        if (IS_WINDOWS && !env.PATH.includes('nodejs')) {
+            env.PATH = `C:\\Program Files\\nodejs;${env.PATH}`;
+        }
+
+        const ytdlp = spawn(YTDLP_PATH, args, { env });
 
         // Pipe yt-dlp output directly to response
         ytdlp.stdout.pipe(res);
