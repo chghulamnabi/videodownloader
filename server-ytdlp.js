@@ -256,6 +256,12 @@ app.post('/api/video-info', async (req, res) => {
             '--extractor-args', 'youtube:player_client=android',
         ];
 
+        // Add cookies if available
+        if (fs.existsSync(COOKIES_PATH)) {
+            args.push('--cookies', COOKIES_PATH);
+            console.log('Using cookies from:', COOKIES_PATH);
+        }
+
         args.push(url);
 
         // Add Node.js to PATH for signature solving
@@ -354,8 +360,14 @@ app.post('/api/download', async (req, res) => {
             '--remux-video', 'mp4',
             '-o', '-',
             '--no-warnings',
-            url
         ];
+
+        // Add cookies if available
+        if (fs.existsSync(COOKIES_PATH)) {
+            args.push('--cookies', COOKIES_PATH);
+        }
+
+        args.push(url);
 
         console.log('Spawning yt-dlp with args:', args);
 
