@@ -20,6 +20,10 @@ const FFMPEG_PATH = IS_WINDOWS
     ? 'C:\\Users\\POSS\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.1-full_build\\bin'
     : null; // ffmpeg is in PATH on Linux
 
+// Cookies file path (optional - place cookies.txt in project root to bypass bot detection)
+const COOKIES_PATH = path.join(__dirname, 'cookies.txt');
+const COOKIES_FLAG = fs.existsSync(COOKIES_PATH) ? `--cookies "${COOKIES_PATH}"` : '';
+
 // Admin config
 const ADMIN_PASSWORD = 'Layyah@3413';
 const ADMIN_TOKEN = 'ytd_admin_' + Buffer.from(ADMIN_PASSWORD).toString('base64');
@@ -242,7 +246,7 @@ app.post('/api/video-info', async (req, res) => {
         console.log('Fetching video info for:', url);
 
         // Use yt-dlp to get video info
-        const command = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --dump-json --no-warnings "${url}"`;
+        const command = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --dump-json --no-warnings ${COOKIES_FLAG} --extractor-retries 3 --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
 
         const { stdout, stderr } = await execPromise(command, { maxBuffer: 1024 * 1024 * 10 });
 
@@ -301,7 +305,7 @@ app.post('/api/download', async (req, res) => {
         console.log('Download request:', { url, quality });
 
         // Get video info first to get the title
-        const infoCommand = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --get-title --no-warnings "${url}"`;
+        const infoCommand = `${IS_WINDOWS ? `"${YTDLP_PATH}"` : YTDLP_PATH} --get-title --no-warnings ${COOKIES_FLAG} --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
         const { stdout: titleOutput } = await execPromise(infoCommand);
         const title = titleOutput.trim().replace(/[^\w\s.-]/gi, '_');
 
@@ -315,6 +319,8 @@ app.post('/api/download', async (req, res) => {
         const maxHeight = quality ? quality.replace('p', '') : '720';
         const args = [
             ...(FFMPEG_PATH ? ['--ffmpeg-location', FFMPEG_PATH] : []),
+            ...(fs.existsSync(COOKIES_PATH) ? ['--cookies', COOKIES_PATH] : []),
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             '-f', `bestvideo[height<=${maxHeight}][vcodec^=avc]+bestaudio[acodec^=mp4a]/bestvideo[height<=${maxHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${maxHeight}]+bestaudio/best[height<=${maxHeight}]/best`,
             '--merge-output-format', 'mp4',
             '--remux-video', 'mp4',
