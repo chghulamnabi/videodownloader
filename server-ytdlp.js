@@ -250,6 +250,8 @@ app.post('/api/video-info', async (req, res) => {
 
         const { stdout, stderr } = await execPromise(command, { maxBuffer: 1024 * 1024 * 10 });
 
+        if (stderr) console.error('yt-dlp stderr:', stderr);
+
         const videoData = JSON.parse(stdout);
 
         // Get all formats and build quality options
